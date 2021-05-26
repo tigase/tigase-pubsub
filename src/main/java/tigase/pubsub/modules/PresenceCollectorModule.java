@@ -17,6 +17,7 @@
  */
 package tigase.pubsub.modules;
 
+import tigase.annotations.TigaseDeprecated;
 import tigase.criteria.Criteria;
 import tigase.criteria.ElementCriteria;
 import tigase.eventbus.EventBus;
@@ -50,7 +51,9 @@ public class PresenceCollectorModule
 	private CapsModule capsModule;
 	@Inject
 	private EventBus eventBus;
-	
+
+	@TigaseDeprecated(since = "4.1.1", removeIn = "5.0.0", note = "Will be replaced by single CAPS node instead of array of nodes")
+	@Deprecated
 	public boolean addJid(final BareJID serviceJid, final JID jid, String[] caps) {
 		if (jid == null) {
 			return false;
@@ -394,6 +397,8 @@ public class PresenceCollectorModule
 		public final String[] oldCaps;
 		public final BareJID serviceJid;
 
+		@TigaseDeprecated(since = "4.1.1", removeIn = "5.0.0", note = "Will be replaced by single CAPS node instead of array of nodes")
+		@Deprecated
 		public CapsChangeEvent(BareJID serviceJid, JID buddyJid, String[] newCaps, String[] oldCaps,
 							   Set<String> newFeatures) {
 			this.serviceJid = serviceJid;
