@@ -975,8 +975,8 @@ public class PubSubDAOJDBC
 					ResultSet rs = null;
 					try {
 						int i = setStatementParamsForMAM(st, query, nodeId);
-						st.setInt(i++, query.getRsm().getMax());
-						st.setInt(i++, query.getRsm().getIndex());
+						st.setInt(i++, Math.min(range.size(), query.getRsm().getMax()));
+						st.setInt(i++, range.getLowerBound() + query.getRsm().getIndex());
 
 						rs = st.executeQuery();
 
