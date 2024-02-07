@@ -19,7 +19,7 @@
     </properties>
 
     <artifactId>tigase-pubsub</artifactId>
-    <version>5.1.1-SNAPSHOT</version>
+    <version>5.1.1</version>
     <packaging>bundle</packaging>
 
     <name>Tigase PubSub</name>
@@ -57,7 +57,7 @@
         <connection>scm:git:${scm_repo_base}/tigase-pubsub.git</connection>
         <developerConnection>scm:git:${scm_repo_base}/tigase-pubsub.git</developerConnection>
         <url>https://projects.tigase.org/projects/tigase-pubsub/repository</url>
-        <tag>HEAD</tag>
+        <tag>tigase-pubsub-5.1.1</tag>
     </scm>
 
     <organization>
