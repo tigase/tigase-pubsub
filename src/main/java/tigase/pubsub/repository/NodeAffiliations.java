@@ -73,7 +73,7 @@ public abstract class NodeAffiliations
 	public UsersAffiliation[] getAffiliations() {
 		final UsersAffiliation[] a = this.affs.values().toArray(new UsersAffiliation[]{});
 		if (LOG.isLoggable(Level.FINEST)) {
-			LOG.log(Level.FINEST, "Affiliation for {0} is {1}", new Object[]{Arrays.asList(a)});
+			LOG.log(Level.FINEST, "Affiliation for node is {0}", new Object[]{Arrays.asList(a)});
 		}
 		return a;
 	}
