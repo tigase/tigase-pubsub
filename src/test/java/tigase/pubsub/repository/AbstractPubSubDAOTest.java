@@ -28,7 +28,7 @@ import tigase.db.DataSourceAware;
 import tigase.db.xml.XMLRepository;
 import tigase.kernel.core.Kernel;
 import tigase.pubsub.*;
-import tigase.pubsub.modules.mam.Query;
+import tigase.pubsub.modules.mam.ExtendedQueryImpl;
 import tigase.pubsub.repository.stateless.UsersAffiliation;
 import tigase.pubsub.repository.stateless.UsersSubscription;
 import tigase.xml.Element;
@@ -242,6 +242,7 @@ public abstract class AbstractPubSubDAOTest<DS extends DataSource> extends Abstr
 
 		Map<String,String> uuids = new HashMap<>();
 
+		long startTime = System.currentTimeMillis() - 20 * 1500;
 		for (int i = 0; i < 20; i++) {
 			String itemId = "item-" + i;
 			String payloadCData = "test-payload";
@@ -255,14 +256,13 @@ public abstract class AbstractPubSubDAOTest<DS extends DataSource> extends Abstr
 					new Element("payload", payloadCData + "-" + i, new String[]{"xmlns"}, new String[]{"test-xmlns"}));
 
 			String uuid = UUID.randomUUID().toString().toLowerCase();
-			dao.writeItem(serviceJid, node.getNodeId(), System.currentTimeMillis(), itemId, senderJid.getBareJID().toString(),
+			long timestamp = startTime + (i * 1500);
+			dao.writeItem(serviceJid, node.getNodeId(), timestamp, itemId, senderJid.getBareJID().toString(),
 						  item, uuid);
-			dao.addMAMItem(serviceJid, node.getNodeId(), uuid, item, itemId);
+			dao.addMAMItem(serviceJid, node.getNodeId(), uuid, item, new Date(timestamp), itemId);
 			uuids.put(itemId, uuid);
 
 			publishedItems.add(item);
-
-			Thread.sleep(1500);
 		}
 
 		String[] publishedItemIds = publishedItems.stream()
@@ -271,7 +271,7 @@ public abstract class AbstractPubSubDAOTest<DS extends DataSource> extends Abstr
 
 		List<IPubSubRepository.Item> results = new ArrayList<>();
 
-		Query query = new Query();
+		ExtendedQueryImpl query = new ExtendedQueryImpl();
 		query.setComponentJID(JID.jidInstance(serviceJid));
 		query.setQuestionerJID(senderJid);
 		query.getRsm().setMax(10);

@@ -36,7 +36,7 @@ public class JDBCPubSubDAOTest
 		extends AbstractPubSubDAOTest<DataRepository> {
 
 	private static final String PROJECT_ID = "pubsub";
-	private static final String VERSION = "5.0.0-SNAPSHOT";
+	private static final String VERSION = "5.3.0-SNAPSHOT";
 
 	@ClassRule
 	public static TestRule rule = new TestRule() {
