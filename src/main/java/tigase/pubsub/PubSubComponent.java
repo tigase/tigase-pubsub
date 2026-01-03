@@ -23,14 +23,17 @@ import tigase.component.modules.impl.AdHocCommandModule;
 import tigase.component.modules.impl.JabberVersionModule;
 import tigase.component.modules.impl.XmppPingModule;
 import tigase.conf.Configurable;
+import tigase.db.AuthRepository;
 import tigase.db.UserRepository;
 import tigase.eventbus.HandleEvent;
 import tigase.kernel.beans.Bean;
 import tigase.kernel.beans.Inject;
+import tigase.kernel.beans.config.ConfigField;
 import tigase.kernel.beans.selector.ClusterModeRequired;
 import tigase.kernel.beans.selector.ConfigType;
 import tigase.kernel.beans.selector.ConfigTypeEnum;
 import tigase.kernel.core.Kernel;
+import tigase.pubsub.modules.RetractItemModule;
 import tigase.pubsub.modules.XsltTool;
 import tigase.pubsub.modules.commands.DefaultConfigCommand;
 import tigase.pubsub.repository.IPubSubRepository;
@@ -44,6 +47,7 @@ import tigase.xmpp.StanzaType;
 import tigase.xmpp.mam.modules.GetFormModule;
 
 import javax.script.Bindings;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.logging.Level;
 
@@ -73,6 +77,8 @@ public class PubSubComponent
 	private IPubSubRepository pubsubRepository;
 	@Inject
 	private PacketHashCodeGenerator packetHashCodeGenerator;
+	@ConfigField(desc = "Reset OMEMO device list on password change", alias = "omemo-reset-devicelist-on-password-change")
+	private boolean omemoResetDevicelistOnPasswordChange = false;
 
 	// ~--- methods
 	// --------------------------------------------------------------
@@ -227,6 +233,26 @@ public class PubSubComponent
 			pubsubRepository.deleteService(event.jid);
 		} catch (RepositoryException ex) {
 			log.log(Level.WARNING, "could not remove PubSub data for removed user " + event.jid, ex);
+		}
+	}
+
+	@HandleEvent
+	public void onPasswordChange(AuthRepository.PasswordChangedEvent event) {
+		try {
+			if (omemoResetDevicelistOnPasswordChange && "default".equals(event.getCredentialId()) && event.getMechanism() == null) {
+				IPubSubRepository pubsubRepository = kernel.getInstance(IPubSubRepository.class);
+				var items = pubsubRepository.getNodeItems(event.getJid(), "eu.siacs.conversations.axolotl.devicelist");
+				if (items != null) {
+					var itemIds = items.getItemsIds(CollectionItemsOrdering.byCreationDate);
+					log.fine(() -> "removing OMEMO devicelist items " + Arrays.toString(itemIds) + " for " + event.getJid() + " on password change");
+					if (itemIds != null && itemIds.length > 0) {
+						RetractItemModule module = kernel.getInstance(RetractItemModule.class);
+						module.retractItems(event.getJid(), "eu.siacs.conversations.axolotl.devicelist", Arrays.asList(itemIds));
+					}
+				}
+			}
+		} catch (RepositoryException ex) {
+			log.log(Level.WARNING, "could not remove PubSub OMEMO devicelist data for user " + event.getJid(), ex);
 		}
 	}
 
