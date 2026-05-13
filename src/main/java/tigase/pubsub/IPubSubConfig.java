@@ -40,6 +40,12 @@ public interface IPubSubConfig {
 
 	boolean isAdmin(final JID jid);
 
+	default boolean isTrusted(final JID jid) {
+		return jid == null ? isTrusted((BareJID) null) : isTrusted(jid.getBareJID());
+	}
+
+	boolean isTrusted(final BareJID jid);
+
 	boolean isMAMEnabled();
 
 	boolean isMAMEnabledForGenericService();

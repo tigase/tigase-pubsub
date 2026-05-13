@@ -344,7 +344,8 @@ public class PublishItemModule
 			} else {
 				// this is PubSub service for particular user - we should
 				// autocreate node
-				nodeConfig = createPepNode(toJid, nodeName, publisher.getBareJID(), publishOptions);
+				// we use service JID as a publisher to make sure ownership is correct
+				nodeConfig = createPepNode(toJid, nodeName, toJid, publishOptions);
 			}
 		} else {
 			if (nodeConfig.getNodeType() == NodeType.collection) {

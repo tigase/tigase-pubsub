@@ -90,14 +90,14 @@ public class DefaultPubSubLogic
 
 		AbstractNodeConfig nodeConfig = repository.getNodeConfig(serviceJid, nodeName);
 		if (nodeConfig == null) {
-			if (action == Action.publishItems && isServiceJidPEP(serviceJid)) {
+			if (action == Action.publishItems && isServiceJidPEP(serviceJid) && (pubSubConfig.isAdmin(senderJid) || pubSubConfig.isTrusted(senderJid))) {
 				// autocreation for PEP nodes is required
 				return;
 			}
 			throw new PubSubException(Authorization.ITEM_NOT_FOUND);
 		}
 
-		if (pubSubConfig.isAdmin(senderJid)) {
+		if (pubSubConfig.isAdmin(senderJid) || pubSubConfig.isTrusted(senderJid)) {
 			return;
 		}
 

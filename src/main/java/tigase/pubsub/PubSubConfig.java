@@ -153,6 +153,11 @@ public class PubSubConfig implements IPubSubConfig {
 		return isAdmin(jid.getBareJID());
 	}
 
+	@Override
+	public boolean isTrusted(BareJID jid) {
+		return component.isTrusted(jid.toString());
+	}
+
 	public boolean isMAMEnabled() {
 		return mamEnabled;
 	}
