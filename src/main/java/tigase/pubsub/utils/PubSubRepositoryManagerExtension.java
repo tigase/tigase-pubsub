@@ -247,7 +247,10 @@ public class PubSubRepositoryManagerExtension extends RepositoryManagerExtension
 
 		String prefix = attrs.get("name");
 		String componentDomain = prefix != null ? (prefix + "." + domain) : domain;
-		return new PubSubComponentImporterExtension(getRepository(PubSubDAO.class, componentDomain), componentDomain, isSet(INCLUDE_PUBSUB));
+
+		log.info("Processing pubsub component: " + componentDomain + ", prefix: " + prefix + ", domain: " + domain + ", name: " + name);
+
+		return new PubSubComponentImporterExtension(getRepository(PubSubDAO.class, domain), componentDomain, isSet(INCLUDE_PUBSUB));
 	}
 
 	@Override
