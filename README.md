@@ -12,11 +12,6 @@
   The PubSub component for Tigase XMPP Server.
 </p>
 
-<p align="center">
-  <img alt="Tigase Logo" src="https://github.com/tigaseinc/website-assets/raw/master/tigase/images/tigase-logo.png?raw=true" width="25"/>
-  <img src="https://tc.tigase.net/app/rest/builds/buildType:(id:TigasePubSub_Build)/statusIcon" width="100"/>
-</p>
-
 # What it is
 
 Tigase PubSub Component is XMPP component for Tigase XMPP Server providing support for [XEP-0060: Publish-Subscribe](https://xmpp.org/extensions/xep-0060.html) and [XEP-0163: Personal Eventing Protocol
@@ -39,11 +34,9 @@ It provides support to Tigase XMPP Server for following features:
 When looking for support, please first search for answers to your question in the available online channels:
 
 * Our online documentation: [Tigase Docs](https://docs.tigase.net)
-* Our online forums: [Tigase Forums](https://help.tigase.net/portal/community)
-* Our online Knowledge Base [Tigase KB](https://help.tigase.net/portal/kb)
+* Existing issues in relevant project, for Tigase Server it's: [Tigase XMPP Server GitHub issues](https://github.com/tigase/tigase-server/issues)
 
-If you didn't find an answer in the resources above, feel free to submit your question to either our 
-[community portal](https://help.tigase.net/portal/community) or open a [support ticket](https://help.tigase.net/portal/newticket).
+If you didn't find an answer in the resources above, feel free to submit your question as new __issue on GitHub__ or, if you have valid support subscription, open [new support ticket](https://tigase.net/technical-support).
 
 # Downloads
 
